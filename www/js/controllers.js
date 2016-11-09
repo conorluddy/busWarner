@@ -1,26 +1,59 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  // $scope.$on('$ionicView.enter', function(e) {});
 
-  Chats.all().then((results)=>{
-    $scope.chats = results;
+
+
+.controller('IncomingBussesCtrl', function($scope, Busses) {
+
+  $scope.$on('$ionicView.enter', function(e) {
+    console.log('x');
+    Busses.get(145, 5127).then((busses)=>{
+      $scope.busses = busses;
+    });
+  });
+
+
+  $scope.doRefresh = function() {
+      console.log('Refreshing');
+      Busses.get(145, 5127).then((busses)=>{
+        $scope.busses = busses;
+      }).finally(function() {
+         // Stop the ion-refresher from spinning
+         $scope.$broadcast('scroll.refreshComplete');
+       });
+    };
+
+})
+
+
+
+
+.controller('HomeBussesCtrl', function($scope, Busses) {
+
+  $scope.$on('$ionicView.enter', function(e) {
+    console.log('y');
+    Busses.get(145, 1478).then((busses)=>{
+      $scope.busses = busses;
+
+      console.log(busses[0]);
+
+      $scope.route = busses[0] ? busses[0].route : '';
+      $scope.destination = busses[0] ? busses[0].destination : '';
+    });
   });
 
 })
 
-// .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-//   $scope.chat = Chats.get($stateParams.chatId);
-// })
 
-.controller('AccountCtrl', function($scope) {
+
+.controller('AccountCtrl', function($scope, Stops) {
   $scope.settings = {
     enableFriends: true
   };
+
+  Stops.get().then((stops)=>{
+    $scope.stops = stops;
+  });
+
 });

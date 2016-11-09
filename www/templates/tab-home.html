@@ -1,0 +1,13 @@
+<ion-view view-title="Busses">
+  <ion-content>
+    <ion-list>
+
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="bus in busses" type="item-text-wrap"> <!-- href="#/tab/chats/{{chat.id}} -->
+
+        <h2>{{bus.departureduetime}} mins - {{bus.route}} Towards {{bus.destination}}</h2>
+
+      </ion-item>
+
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,17 +1,29 @@
-<ion-view view-title="Chats">
+<ion-view view-title="Busses">
   <ion-content>
+
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
+
+    <h2>
+      {{$scope.route}} {{$scope.destination}}
+    </h2>
+
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
 
-        <h2>{{chat.arrivaldatetime}}</h2>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="bus in busses" type="item-text-wrap"> <!-- href="#/tab/chats/{{chat.id}} -->
 
-        <p>{{chat.departureduetime}} - {{chat.route}} Towards {{chat.destination}}</p>
 
-        <!-- <i class="icon ion-chevron-right icon-accessory"></i> -->
-        <!-- <ion-option-button class="button-assertive" ng-click="remove(chat)">
-          Delete
-        </ion-option-button> -->
+        <div class="row">
+          <div class="col col-offset-50">
+            {{bus.departureduetime}}
+          </div>
+        </div>
+
+
       </ion-item>
+
     </ion-list>
   </ion-content>
 </ion-view>

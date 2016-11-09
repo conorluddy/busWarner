@@ -1,9 +1,24 @@
 <ion-view view-title="Account">
   <ion-content>
-    <ion-list>
+    <!-- <ion-list>
     <ion-toggle  ng-model="settings.enableFriends">
         Enable Friends
     </ion-toggle>
+    </ion-list> -->
+
+
+    <ion-list>
+
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="stop in stops" type="item-text-wrap"> <!-- href="#/tab/chats/{{chat.id}} -->
+
+        <!-- <h2>{{bus.departureduetime}} mins - {{bus.route}} Towards {{bus.destination}}</h2> -->
+
+      </ion-item>
+
     </ion-list>
+
+
+
+
   </ion-content>
 </ion-view>
