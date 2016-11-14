@@ -1,13 +1,24 @@
-<ion-view view-title="Busses">
-  <ion-content>
-    <ion-list>
+<ion-view view-title="{{route}} to {{destination}}">
+  <ion-content class="c-countdown">
 
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="bus in busses" type="item-text-wrap"> <!-- href="#/tab/chats/{{chat.id}} -->
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
 
-        <h2>{{bus.departureduetime}} mins - {{bus.route}} Towards {{bus.destination}}</h2>
+        <h3>Next bus due at</h3>
 
-      </ion-item>
+        <span class="time-hhmmss">
+          {{nextBus.due.h}} {{nextBus.due.m}} <small>{{nextBus.due.s}}</small>
+        </span>
 
-    </ion-list>
+        <h3>ETA</h3>
+
+        {{nextBus.til}}
+
+        <h3>Then</h3>
+
+        + {{etaNextDiff}}
+
   </ion-content>
 </ion-view>

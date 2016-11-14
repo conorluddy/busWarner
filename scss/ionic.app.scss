@@ -32,7 +32,8 @@ $dark:                            #444 !default;
 // Base
 // -------------------------------
 
-$font-family-sans-serif:          "Roboto", "Segoe UI", sans-serif !default;
+// Bungee|Poiret+One|Russo+One
+$font-family-sans-serif:          "Teko", "Segoe UI", sans-serif !default;
 
 $font-family-light-sans-serif:    "Roboto-Light", "Segoe UI-Light", sans-serif-light !default;
 $font-family-serif:               serif !default;
@@ -784,3 +785,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+
+// Include components
+@import "components/components.scss";
