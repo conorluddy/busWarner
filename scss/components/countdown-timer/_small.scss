@@ -1,25 +1,133 @@
 
 
 .c-countdown {
-  padding-top: 0.2em;
-  text-align: center;
-  font-size: 7em;
+  padding-top: 20px;
+  text-align: left;
+  font-size: 6em;
   line-height: 1em;
-  background: url('../img/background/bg1.jpg');
-  background-position: center center;
-  background-size: cover;
-  color: #fff;
+  color: rgba(130,130,130,100);
 
 
-  .time-hhmmss {
-    small {
-      font-size: 0.3em;
+  h2,
+  h3 {
+    color: unset;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+  }
+
+
+
+  .next-bus {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 230px;
+    transform: rotate(-15deg);
+    transform-origin: 100% 100%;
+    text-align: right;
+    padding-right: 20px;
+
+    > * {
+      display: block;
+    }
+
+    .route-number {
+      color: $dbBlue;
+      font-weight: 300;
+      font-size: 3rem;
+    }
+    .route-destination {
+      font-size: 1.5rem;
+    }
+
+    .next-time {
+      font-size: 13rem;
+      line-height: 0.8em;
+
+      span:first-child{
+        font-weight: 300;
+        color: $dbBlue;
+      }
+      span:last-child{
+        color: rgba(130,130,130,20);
+        color: $dbYellow;
+      }
+    }
+
+
+    .next-mins {
+      font-size: 2.5rem;
+      line-height: 0.5em;
+      font-weight: 300;
+      position: absolute;
+      bottom: 0;
+      right: 20px;
+      span:first-child{
+        color: $dbBlue;
+      }
+      span:last-child{
+      }
+
     }
   }
 
 
-  h2,h3 {
-    color: #009ee0;
+  .following-busses {
+    margin-top: 20px;
+    padding: 20px;
+    &:before,
+    &:after {
+      content: '';
+      background: $dbYellow;
+      width: 200%;
+      height: 6px;
+      display: block;
+      transform: rotate(-15deg) translate3d(20%,0,0);
+      transform-origin: 100% 100%;
+      float: right;
+    }
+    &:before {
+    }
+    &:after {
+      margin-top: 10px;
+    }
+
+    &.none-due{
+      &:before,
+      &:after {
+        background: $dbBlue;
+      }
+    }
   }
 
+  .bus-bar {
+    // transition: all 500ms ease;
+    display: block;
+    background: $dbYellow;
+    line-height: 1.5em;
+    height: 1.3em;
+    font-size: 0.4em;
+    display: block;
+    transform: rotate(-15deg) translate3d(0, 0, 0);
+    transform-origin: 100% 100%;
+    text-align: right;
+    clear: both;
+    color: #222;
+    font-weight: 300;
+    margin-top: 10px;
+    padding-right: 0.4em;
+    width: 120%;
+    float: right;
+
+    &.bus-cold {
+      background: $dbBlue;
+    }
+  }
+
+  .none-due .bus-bar {
+    transform: rotate(-15deg) translate3d(0,0,0);
+    background: $dbBlue;
+    opacity: 0.3;
+  }
 }

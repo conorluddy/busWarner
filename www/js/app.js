@@ -23,7 +23,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('bottom');
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -76,25 +78,3 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   $urlRouterProvider.otherwise('/tab/dash');
 
 });
-
-
-
-
-  // .state('tab.chats', {
-  //     url: '/chats',
-  //     views: {
-  //       'tab-chats': {
-  //         templateUrl: 'templates/tab-chats.html',
-  //         controller: 'ChatsCtrl'
-  //       }
-  //     }
-  //   })
-  //   .state('tab.chat-detail', {
-  //     url: '/chats/:chatId',
-  //     views: {
-  //       'tab-chats': {
-  //         templateUrl: 'templates/chat-detail.html',
-  //         controller: 'ChatDetailCtrl'
-  //       }
-  //     }
-  //   })

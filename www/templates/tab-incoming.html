@@ -1,4 +1,4 @@
-<ion-view view-title="{{route}} to {{destination}}">
+<ion-view>
   <ion-content class="c-countdown">
 
     <ion-refresher
@@ -6,19 +6,37 @@
       on-refresh="doRefresh()">
     </ion-refresher>
 
-        <h3>Next bus due at</h3>
 
-        <span class="time-hhmmss">
-          {{nextBus.due.h}} {{nextBus.due.m}} <small>{{nextBus.due.s}}</small>
-        </span>
 
-        <h3>ETA</h3>
+    <div class="next-bus">
+      <h3 class="route-destination">
+        {{destination}}<span class="route-number">{{route}}</span>
+      </h3>
 
-        {{nextBus.til}}
+      <time class="next-time" ng-show="nextBus.dueTime">
+        <span>{{nextBus.dueTime.h}}</span><span>{{nextBus.dueTime.m}}</span>
+      </time>
 
-        <h3>Then</h3>
+      <time class="next-mins" ng-show="nextBus.dueTime">
+        <span>{{nextBus.etaMins}}</span><span> MINUTES AWAY</span>
+      </time>
+    </div>
 
-        + {{etaNextDiff}}
+
+
+    <div ng-class="busses.length ? 'following-busses' : 'following-busses none-due'">
+
+            <div class="bus-bar" ng-repeat="bus in busses" style="{{bus.barStyle}}"  ng-class="bus.barCold ? 'bus-bar bus-cold' : 'bus-bar'">
+              {{bus.etaMins}}
+            </div>
+
+            <div class="bus-bar" ng-show="!busses.length">
+              No more busses due
+            </div>
+
+    </div>
+
+
 
   </ion-content>
 </ion-view>

@@ -28,12 +28,53 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 
+$dbBlue:                          rgba(0,167,234,100);
+$dbYellow:                        rgba(255,205,0,100);
+
+
+// Font
+// -------------------------------
+@font-face {
+  font-family: 'Teko-Web';
+  src:  url('../fonts/teko/teko-regular-webfont.woff2') format('woff2'),
+        url('../fonts/teko/teko-regular-webfont.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Teko-Web';
+  font-weight: 200;
+  src:  url('../fonts/teko/teko-light-webfont.woff2') format('woff2'),
+        url('../fonts/teko/teko-light-webfont.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Teko-Web';
+  font-weight: 300;
+  src:  url('../fonts/teko/teko-medium-webfont.woff2') format('woff2'),
+        url('../fonts/teko/teko-medium-webfont.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Teko-Web';
+  font-weight: 500;
+  src:  url('../fonts/teko/teko-semibold-webfont.woff2') format('woff2'),
+        url('../fonts/teko/teko-semibold-webfont.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Teko-Web';
+  font-weight: 600;
+  src:  url('../fonts/teko/teko-bold-webfont.woff2') format('woff2'),
+        url('../fonts/teko/teko-bold-webfont.woff') format('woff');
+}
+
+
 
 // Base
 // -------------------------------
 
 // Bungee|Poiret+One|Russo+One
-$font-family-sans-serif:          "Teko", "Segoe UI", sans-serif !default;
+$font-family-sans-serif:          "Teko-Web", sans-serif !default;
 
 $font-family-light-sans-serif:    "Roboto-Light", "Segoe UI-Light", sans-serif-light !default;
 $font-family-serif:               serif !default;
@@ -785,6 +826,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+
+@import "base.scss";
 
 // Include components
 @import "components/components.scss";

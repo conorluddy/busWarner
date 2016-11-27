@@ -15,6 +15,30 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
+@font-face {
+  font-family: 'Teko-Web';
+  src: url("../fonts/teko/teko-regular-webfont.woff2") format("woff2"), url("../fonts/teko/teko-regular-webfont.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Teko-Web';
+  font-weight: 200;
+  src: url("../fonts/teko/teko-light-webfont.woff2") format("woff2"), url("../fonts/teko/teko-light-webfont.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Teko-Web';
+  font-weight: 300;
+  src: url("../fonts/teko/teko-medium-webfont.woff2") format("woff2"), url("../fonts/teko/teko-medium-webfont.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Teko-Web';
+  font-weight: 500;
+  src: url("../fonts/teko/teko-semibold-webfont.woff2") format("woff2"), url("../fonts/teko/teko-semibold-webfont.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Teko-Web';
+  font-weight: 600;
+  src: url("../fonts/teko/teko-bold-webfont.woff2") format("woff2"), url("../fonts/teko/teko-bold-webfont.woff") format("woff"); }
+
 /*!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
@@ -3339,7 +3363,7 @@ body,
   word-wrap: break-word;
   font-size: 14px;
   font-family: -apple-system;
-  font-family: "Teko", "Segoe UI", sans-serif;
+  font-family: "Teko-Web", sans-serif;
   line-height: 20px;
   text-rendering: optimizeLegibility;
   -webkit-backface-visibility: hidden;
@@ -3595,7 +3619,7 @@ h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   color: #000;
   font-weight: 500;
-  font-family: "Teko", "Segoe UI", sans-serif;
+  font-family: "Teko-Web", sans-serif;
   line-height: 1.2; }
   h1 small, h2 small, h3 small, h4 small, h5 small, h6 small,
   .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small {
@@ -5120,7 +5144,7 @@ ion-tabs.tabs-striped.tabs-color-active-dark .tab-item.tab-item-active, ion-tabs
   white-space: nowrap;
   font-weight: 400;
   font-size: 14px;
-  font-family: "Teko", "Segoe UI", sans-serif;
+  font-family: "Teko-Web", sans-serif;
   opacity: 0.7; }
   .tab-item:hover {
     cursor: pointer; }
@@ -7550,7 +7574,7 @@ input,
 button,
 select,
 textarea {
-  font-family: "Teko", "Segoe UI", sans-serif; }
+  font-family: "Teko-Web", sans-serif; }
 
 .item-input {
   display: -webkit-box;
@@ -9815,16 +9839,102 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-.c-countdown {
-  padding-top: 0.2em;
-  text-align: center;
-  font-size: 7em;
-  line-height: 1em;
-  background: url("../img/background/bg1.jpg");
+.view-container {
+  background: url("../img/background/broken_noise_@2X.png");
   background-position: center center;
-  background-size: cover;
-  color: #fff; }
-  .c-countdown .time-hhmmss small {
-    font-size: 0.3em; }
-  .c-countdown h2, .c-countdown h3 {
-    color: #009ee0; }
+  background-size: 476px 476px;
+  background-repeat: repeat; }
+
+.pane,
+.view {
+  background: unset; }
+
+.c-countdown {
+  padding-top: 20px;
+  text-align: left;
+  font-size: 6em;
+  line-height: 1em;
+  color: #828282; }
+  .c-countdown h2,
+  .c-countdown h3 {
+    color: unset;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0; }
+  .c-countdown .next-bus {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 230px;
+    transform: rotate(-15deg);
+    transform-origin: 100% 100%;
+    text-align: right;
+    padding-right: 20px; }
+    .c-countdown .next-bus > * {
+      display: block; }
+    .c-countdown .next-bus .route-number {
+      color: #00a7ea;
+      font-weight: 300;
+      font-size: 3rem; }
+    .c-countdown .next-bus .route-destination {
+      font-size: 1.5rem; }
+    .c-countdown .next-bus .next-time {
+      font-size: 13rem;
+      line-height: 0.8em; }
+      .c-countdown .next-bus .next-time span:first-child {
+        font-weight: 300;
+        color: #00a7ea; }
+      .c-countdown .next-bus .next-time span:last-child {
+        color: #828282;
+        color: #ffcd00; }
+    .c-countdown .next-bus .next-mins {
+      font-size: 2.5rem;
+      line-height: 0.5em;
+      font-weight: 300;
+      position: absolute;
+      bottom: 0;
+      right: 20px; }
+      .c-countdown .next-bus .next-mins span:first-child {
+        color: #00a7ea; }
+  .c-countdown .following-busses {
+    margin-top: 20px;
+    padding: 20px; }
+    .c-countdown .following-busses:before, .c-countdown .following-busses:after {
+      content: '';
+      background: #ffcd00;
+      width: 200%;
+      height: 6px;
+      display: block;
+      transform: rotate(-15deg) translate3d(20%, 0, 0);
+      transform-origin: 100% 100%;
+      float: right; }
+    .c-countdown .following-busses:after {
+      margin-top: 10px; }
+    .c-countdown .following-busses.none-due:before, .c-countdown .following-busses.none-due:after {
+      background: #00a7ea; }
+  .c-countdown .bus-bar {
+    display: block;
+    background: #ffcd00;
+    line-height: 1.5em;
+    height: 1.3em;
+    font-size: 0.4em;
+    display: block;
+    transform: rotate(-15deg) translate3d(0, 0, 0);
+    transform-origin: 100% 100%;
+    text-align: right;
+    clear: both;
+    color: #222;
+    font-weight: 300;
+    margin-top: 10px;
+    padding-right: 0.4em;
+    width: 120%;
+    float: right; }
+    .c-countdown .bus-bar.bus-cold {
+      background: #00a7ea; }
+  .c-countdown .none-due .bus-bar {
+    transform: rotate(-15deg) translate3d(0, 0, 0);
+    background: #00a7ea;
+    opacity: 0.3; }
+
+.tabs {
+  background: unset; }
