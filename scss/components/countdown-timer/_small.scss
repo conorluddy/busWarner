@@ -119,9 +119,18 @@
     padding-right: 0.4em;
     width: 120%;
     float: right;
+    border-radius: 2px;
+    position: relative;
 
     &.bus-cold {
       background: $dbBlue;
+    }
+
+    &:after {
+      content: 'MINS';
+      position: absolute;
+      right: -2em;
+      color: #444;
     }
   }
 

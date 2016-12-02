@@ -1,24 +1,31 @@
 <ion-view view-title="Account">
   <ion-content>
-    <!-- <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
-    </ion-toggle>
-    </ion-list> -->
 
+    <form ng-submit="saveSettings(form)">
 
-    <ion-list>
+      <div class="list list-inset">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">InboundRoute</span>
+          <input type="text" placeholder="Route No." ng-model="form.routeInbound" value="{{inboundRoute}}">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">InboundStop</span>
+          <input type="text" placeholder="Stop No." ng-model="form.stopInbound" value="{{inboundStop}}">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">OutboundRoute</span>
+          <input type="text" placeholder="Route No." ng-model="form.routeOutbound" value="{{outboundRoute}}">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">OutboundStop</span>
+          <input type="text" placeholder="Stop No." ng-model="form.stopOutbound" value="{{outboundStop}}">
+        </label>
+      </div>
 
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="stop in stops" type="item-text-wrap"> <!-- href="#/tab/chats/{{chat.id}} -->
-
-        <!-- <h2>{{bus.departureduetime}} mins - {{bus.route}} Towards {{bus.destination}}</h2> -->
-
-      </ion-item>
-
-    </ion-list>
-
-
-
+      <div class="padding">
+        <button type="submit" class="button button-block button-positive">Save</button>
+      </div>
+    </form>
 
   </ion-content>
 </ion-view>

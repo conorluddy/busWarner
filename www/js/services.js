@@ -53,10 +53,81 @@ angular.module('starter.services', [])
       // return null;
     // }
   };
+})
+
+
+
+
+// localforage.getItem('busStop').then((busStop)=>{
+//   route = busRoute;
+//   stop = busStop;
+// })
+
+.factory('Settings', function() {
+
+  return {
+
+    setInboundRoute: (inboundRoute) => {
+      localforage.setItem('busRouteInbound', inboundRoute)
+        .then((inboundRoute) => {
+          console.log('Saving inboundRoute: ', inboundRoute);
+          return inboundRoute;
+        }).catch((err) => {
+          console.warn(err);
+        });
+    },
+
+    setInboundStop: (inboundStop) => {
+      localforage.setItem('busStopInbound', inboundStop)
+        .then((inboundStop) => {
+          console.log('Saving inboundStop: ', inboundStop);
+          return inboundStop;
+        }).catch((err) => {
+          console.warn(err);
+        });
+    },
+
+    setOutboundRoute: (outboundRoute) => {
+      localforage.setItem('busRouteOutbound', outboundRoute)
+        .then((outboundRoute) => {
+          console.log('Saving outboundRoute: ', outboundRoute);
+          return outboundRoute;
+        }).catch((err) => {
+          console.warn(err);
+        });
+    },
+
+    setOutboundStop: (outboundStop) => {
+      localforage.setItem('busStopOutbound', outboundStop)
+        .then((outboundStop) => {
+          console.log('Saving outboundStop: ', outboundStop);
+          return outboundStop;
+        }).catch((err) => {
+          console.warn(err);
+        });
+    },
+
+    //////////////////////////////////////////
+
+
+    getInboundRoute: (inboundRoute) => {
+      return localforage.getItem('busRouteInbound');
+    },
+
+    getInboundStop: (inboundStop) => {
+      return localforage.getItem('busStopInbound');
+    },
+
+    getOutboundRoute: (outboundRoute) => {
+      return localforage.getItem('busRouteOutbound');
+    },
+
+    getOutboundStop: (outboundStop) => {
+      return localforage.getItem('busStopOutbound');
+    }
+
+  };
 });
-
-
-
 
 
 
