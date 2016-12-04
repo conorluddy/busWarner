@@ -1,7 +1,7 @@
 angular.module('starter.services', [])
 
-.factory('Busses', function($http) {
 
+.factory('Busses', function($http) {
   return {
     all: function() {
       var url = 'https://data.dublinked.ie/cgi-bin/rtpi/realtimebusinformation?stopid=5127&routeid=145&format=json';
@@ -29,31 +29,123 @@ angular.module('starter.services', [])
 })
 
 
-
-
 .factory('Stops', function($http) {
-
   return {
-    get: function() {
-      var url = 'https://data.dublinked.ie/cgi-bin/rtpi/busstopinformation?&format=json';
+    get: () => {
+      return localforage.getItem('stopCache');
+    },
+    /**
+     * Run on initial boot and store all stops into our DB
+     */
+    buildCache: () => {
+      let url = 'https://data.dublinked.ie/cgi-bin/rtpi/busstopinformation?&format=json';//Baile Atha Cliath ;)
 
       return $http.get(url).then((response) => {
-        console.log(response);
-        return response.data.results;
+        return localforage.setItem('stopCache', response.data.results)
+          .then((stops) => {
+            if (stops) {
+              console.log('Stored stops in DB: ', stops);
+              return true;
+            } else {
+              console.warn('Cant get stops');
+              return false;
+            }
+          });
+      }).catch(function(errResponse){
+        console.log(errResponse);
+      });
+    },
+    /**
+     * return all of the stops along the provided route
+     */
+    getRouteStops: (routeId, operator = 'bac') => {
+      let url = 'https://data.dublinked.ie/cgi-bin/rtpi/routeinformation?&format=json&routeid=' + routeId + '&operator=' + operator;//Baile Atha Cliath ;)
+
+      if (!routeId || !operator) {
+        console.warn('No route ID or no operator');
+        return [];
+      }
+
+      return $http.get(url).then((response) => {
+        if (parseInt(response.data.errorcode) !== 0) {
+          console.warn(response);
+          return [];
+        } else {
+          return response.data.results;
+        }
+
+      }).catch(function(errResponse){
+        console.log(errResponse);
+      });
+    },
+    /**
+     * return all of the stops along the provided route
+     */
+    getStopInformation: (stopId) => {
+
+      localforage.getItem('stopCache')
+        .then((stops)=>{
+          console.log('stops');
+          console.log(stops);
+        });
+
+    }
+
+  };
+})
+
+
+.factory('Routes', ($http) => {
+  return {
+
+    getAll: () => {
+      return localforage.getItem('routeCache');
+    },
+    /**
+     * Run on initial boot and store all routes into our DB
+     */
+    buildCache: () => {
+      let url = 'https://data.dublinked.ie/cgi-bin/rtpi/routelistinformation?&format=json&operator=bac';//Baile Atha Cliath ;)
+
+      return $http.get(url)
+        .then((response) => {
+          let routeList = [];
+          let routeData = response ? response.data.results : false;
+
+          if (routeData) {
+            for (var i = 0; i < routeData.length; i++) {
+              //Stripping out routes that dont begin with a digit.
+              //Check net log to see why
+              if (parseInt( routeData[i].route.charAt(0))) {
+                routeList.push(routeData[i].route);
+              }
+            }
+          }
+
+          return localforage.setItem('routeCache', routeList)
+            .then((routes) => {
+              if (routes) {
+                console.log('Stored routes in DB: ', routes);
+                return true;
+              } else {
+                console.warn('Cant get routes');
+                return false;
+              }
+            });
+
       }).catch(function(errResponse){
         console.log(errResponse);
       });
     }
-    // get: function(busId) {
-      // for (var i = 0; i < busses.length; i++) {
-      //   // if (busses[i].id === parseInt(busId)) {
-      //     return busses[i];
-      //   // }
-      // }
-      // return null;
-    // }
   };
 })
+
+
+
+
+
+
+
 
 
 
@@ -64,11 +156,26 @@ angular.module('starter.services', [])
 // })
 
 .factory('Settings', function() {
-
   return {
+    /**
+     * Application config
+     */
+    getPrimed: () => {
+      return localforage.getItem('primed');
+    },
+    setPrimed: (primed) => {
+      return localforage.setItem('primed', primed)
+        .then((primed) => {
+          return primed;
+        })
+    },
+
+    /**
+     * User preferred routes and stops
+     */
 
     setInboundRoute: (inboundRoute) => {
-      localforage.setItem('busRouteInbound', inboundRoute)
+      return localforage.setItem('busRouteInbound', inboundRoute)
         .then((inboundRoute) => {
           console.log('Saving inboundRoute: ', inboundRoute);
           return inboundRoute;
@@ -78,7 +185,7 @@ angular.module('starter.services', [])
     },
 
     setInboundStop: (inboundStop) => {
-      localforage.setItem('busStopInbound', inboundStop)
+      return localforage.setItem('busStopInbound', inboundStop)
         .then((inboundStop) => {
           console.log('Saving inboundStop: ', inboundStop);
           return inboundStop;
@@ -88,7 +195,7 @@ angular.module('starter.services', [])
     },
 
     setOutboundRoute: (outboundRoute) => {
-      localforage.setItem('busRouteOutbound', outboundRoute)
+      return localforage.setItem('busRouteOutbound', outboundRoute)
         .then((outboundRoute) => {
           console.log('Saving outboundRoute: ', outboundRoute);
           return outboundRoute;
@@ -98,7 +205,7 @@ angular.module('starter.services', [])
     },
 
     setOutboundStop: (outboundStop) => {
-      localforage.setItem('busStopOutbound', outboundStop)
+      return localforage.setItem('busStopOutbound', outboundStop)
         .then((outboundStop) => {
           console.log('Saving outboundStop: ', outboundStop);
           return outboundStop;
@@ -128,7 +235,3 @@ angular.module('starter.services', [])
 
   };
 });
-
-
-
-// {"errorcode":"0","errormessage":"","numberofresults":3,"stopid":"1478","timestamp":"13\/11\/2016 19:51:26","results":[{"arrivaldatetime":"13\/11\/2016 20:05:11","duetime":"13","departuredatetime":"13\/11\/2016 20:05:11","departureduetime":"13","scheduledarrivaldatetime":"13\/11\/2016 20:05:00","scheduleddeparturedatetime":"13\/11\/2016 20:05:00","destination":"Ballywaltrim","destinationlocalized":"Baile Bhaltraim","origin":"Heuston Station","originlocalized":"Stáisiun Heuston","direction":"Outbound","operator":"bac","additionalinformation":"","lowfloorstatus":"no","route":"145","sourcetimestamp":"13\/11\/2016 19:06:29","monitored":"true"},{"arrivaldatetime":"13\/11\/2016 20:25:11","duetime":"33","departuredatetime":"13\/11\/2016 20:25:11","departureduetime":"33","scheduledarrivaldatetime":"13\/11\/2016 20:25:00","scheduleddeparturedatetime":"13\/11\/2016 20:25:00","destination":"Ballywaltrim","destinationlocalized":"Baile Bhaltraim","origin":"Heuston Station","originlocalized":"Stáisiun Heuston","direction":"Outbound","operator":"bac","additionalinformation":"","lowfloorstatus":"no","route":"145","sourcetimestamp":"13\/11\/2016 19:26:17","monitored":"true"},{"arrivaldatetime":"13\/11\/2016 20:44:35","duetime":"53","departuredatetime":"13\/11\/2016 20:44:35","departureduetime":"53","scheduledarrivaldatetime":"13\/11\/2016 20:45:00","scheduleddeparturedatetime":"13\/11\/2016 20:45:00","destination":"Ballywaltrim","destinationlocalized":"Baile Bhaltraim","origin":"Heuston Station","originlocalized":"Stáisiun Heuston","direction":"Outbound","operator":"bac","additionalinformation":"","lowfloorstatus":"no","route":"145","sourcetimestamp":"13\/11\/2016 19:46:05","monitored":"true"}]}

@@ -34,9 +34,41 @@ function _calcBusses(busses, $scope) {
 
 angular.module('starter.controllers', [])
 
+
+  .controller('LandingCtrl', function($scope, Settings, Stops, Routes) {
+
+      // If not primed then go fetch stops and routes.
+      // localforage.clear();
+
+      Settings.getPrimed().then((primed) => {
+        if (primed) {
+          console.log('Already primed.');
+
+        } else {
+          console.log('Build caches');
+
+          Stops.buildCache().then((stops)=>{
+            Routes.buildCache().then((routes)=>{
+              Settings.setPrimed(true);
+            });
+          })
+          .catch((e) => {
+            console.warn(e);
+          });
+        }
+      });
+  })
+
+
+
+
+
   .controller('IncomingBussesCtrl', function($scope, Busses, Settings) {
     Settings.getInboundRoute().then((route)=>{
       Settings.getInboundStop().then((stop)=>{
+
+        console.log('route: ', route);
+        console.dir(stop);
 
         update(route, stop);
         ////////////////////////////////////////////////////////////////////////
@@ -93,39 +125,100 @@ angular.module('starter.controllers', [])
     }
   })
 
+
+
+
+
+
   //////////////////////////////////////////////////////////////////////////////
 
-  .controller('AccountCtrl', function($scope, Stops, Settings) {
+  .controller('AccountCtrl', function($scope, Stops, Settings, Routes) {
     $scope.form = {};
 
     Settings.getInboundRoute().then((route)=>{
       $scope.$apply(()=>{
         $scope.form.routeInbound = route;
+        listStops(route);
       });
     });
+    $scope.routeInboundSelected = function() {
+      Settings.setInboundRoute($scope.form.routeInbound);
+      listStops($scope.form.routeInbound);
+    };
+
+
     Settings.getInboundStop().then((stop)=>{
       $scope.$apply(()=>{
         $scope.form.stopInbound = stop;
       });
     });
-    Settings.getOutboundRoute().then((route)=>{
+    $scope.stopInboundSelected = function() {
+      Settings.setInboundStop($scope.form.stopInbound);
+      listStops($scope.form.stopInbound);
+    };
+
+
+
+    Routes.getAll().then((routes) => {
       $scope.$apply(()=>{
-        $scope.form.routeOutbound = route;
-      });
-    });
-    Settings.getOutboundStop().then((stop)=>{
-      $scope.$apply(()=>{
-        $scope.form.stopOutbound = stop;
+        $scope.routes = routes;
       });
     });
 
-    $scope.saveSettings = function(form) {
-      if (form) {
-        Settings.setInboundRoute(form.routeInbound);
-        Settings.setInboundStop(form.stopInbound);
-        Settings.setOutboundRoute(form.routeOutbound);
-        Settings.setOutboundStop(form.stopOutbound);
-      }
+
+    function listStops(route) {
+      return Stops.getRouteStops(route)
+        .then((directions) => {
+          if (directions.length === 1) {
+            $scope.destinationA = directions[0].destination;
+            $scope.stopsInward = directions[0];
+          }
+          if (directions.length === 2) {
+            console.log(directions[0]);
+            $scope.destinationA = directions[0].destination;
+            $scope.destinationB = directions[1].destination;
+            $scope.stopsInward = directions[0].stops;
+            $scope.stopsOutward = directions[1].stops;
+          }
+      });
     }
+
+    Stops.getStopInformation();
+
+
+
+    // Stops.get();
+    // Routes.getDublinBusses();
+    // Stops.getRouteStops('145');
+    //
+    // Settings.getInboundRoute().then((route)=>{
+    //   $scope.$apply(()=>{
+    //     $scope.form.routeInbound = route;
+    //   });
+    // });
+    // Settings.getInboundStop().then((stop)=>{
+    //   $scope.$apply(()=>{
+    //     $scope.form.stopInbound = stop;
+    //   });
+    // });
+    // Settings.getOutboundRoute().then((route)=>{
+    //   $scope.$apply(()=>{
+    //     $scope.form.routeOutbound = route;
+    //   });
+    // });
+    // Settings.getOutboundStop().then((stop)=>{
+    //   $scope.$apply(()=>{
+    //     $scope.form.stopOutbound = stop;
+    //   });
+    // });
+    //
+    // $scope.saveSettings = function(form) {
+    //   if (form) {
+    //     Settings.setInboundRoute(form.routeInbound);
+    //     Settings.setInboundStop(form.stopInbound);
+    //     Settings.setOutboundRoute(form.routeOutbound);
+    //     Settings.setOutboundStop(form.stopOutbound);
+    //   }
+    // }
 
   });

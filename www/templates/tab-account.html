@@ -1,6 +1,93 @@
 <ion-view view-title="Account">
   <ion-content>
 
+
+    <div class="list">
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Inbound
+        </div>
+        <select ng-change="routeInboundSelected()" ng-model="form.routeInbound">
+          <option ng-repeat="option in routes" value="{{option}}">{{option}}</option>
+        </select>
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Stop number
+        </div>
+        <select ng-change="stopInboundSelected()" ng-model="form.stopInbound">
+          <option ng-repeat="option in stopsInward" value="{{option.stopid}}">{{option.stopid}} - {{option.shortname}}</option>
+        </select>
+      </label>
+    </div>
+
+<!--
+    <div class="list">
+
+      <div class="item item-divider">
+        Towards {{destinationA}}
+      </div>
+      <a class="item" href="#" ng-repeat="stop in stopsInward">{{stop.shortname}} <small>{{stop.stopid}}</small></a>
+
+      <div class="item item-divider">
+        Towards {{destinationB}}
+      </div>
+      <a class="item" href="#" ng-repeat="stop in stopsOutward">{{stop.shortname}} <small>{{stop.stopid}}</small></a>
+    </div> -->
+
+
+
+<!--
+        <div class="list card">
+
+          <div class="item item-avatar">
+            <h2>Inbound Commute</h2>
+            <p></p>
+          </div>
+
+          <div class="item item-image">
+          </div>
+
+          <a class="item item-icon-left assertive" href="#">
+            Save
+          </a>
+
+        </div>
+
+
+    <div class="list">
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Outbound
+        </div>
+        <select>
+          <option>Blue</option>
+          <option selected>Green</option>
+          <option>Red</option>
+        </select>
+      </label>
+    </div>
+
+
+
+        <div class="list card">
+
+          <div class="item item-avatar">
+            <h2>Outbound Commute</h2>
+            <p></p>
+          </div>
+
+          <div class="item item-image">
+          </div>
+
+          <a class="item item-icon-left assertive" href="#">
+            Save
+          </a>
+
+        </div>
+
+
     <form ng-submit="saveSettings(form)">
 
       <div class="list list-inset">
@@ -25,7 +112,7 @@
       <div class="padding">
         <button type="submit" class="button button-block button-positive">Save</button>
       </div>
-    </form>
+    </form> -->
 
   </ion-content>
 </ion-view>
