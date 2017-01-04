@@ -32,9 +32,46 @@ function _calcBusses(busses, $scope) {
 
 
 
+function _listDirections(route, Stops, $scope) {
+  return Stops.getRouteStops(route)
+    .then((directions) => {
+      let opts = [];
+      if (directions) {
+        directions.forEach((dir) => {
+          opts.push(dir.destination);
+        })
+      }
+      return opts;
+  }).catch((e) => {
+    console.log(e);
+  });
+}
+
+
+
+function _listStops(route, Stops, $scope) {
+  return Stops.getRouteStops(route)
+    .then((directions) => {
+
+      let directionsArray = [];
+
+      if (directions.length === 1) {
+        $scope.destinationA = directions[0].destination;
+        $scope.stopsInward = directions[0];
+      }
+
+      if (directions.length === 2) {
+        $scope.destinationA = directions[0].destination;
+        $scope.destinationB = directions[1].destination;
+        $scope.stopsInward = directions[0].stops;
+        $scope.stopsOutward = directions[1].stops;
+      }
+
+  });
+}
+
+
 angular.module('starter.controllers', [])
-
-
   .controller('LandingCtrl', function($scope, Settings, Stops, Routes) {
 
       // If not primed then go fetch stops and routes.
@@ -42,18 +79,22 @@ angular.module('starter.controllers', [])
 
       Settings.getPrimed().then((primed) => {
         if (primed) {
+          ////
           console.log('Already primed.');
-
+          ////
         } else {
+          ////
           console.log('Build caches');
-
+          ////
           Stops.buildCache().then((stops)=>{
             Routes.buildCache().then((routes)=>{
               Settings.setPrimed(true);
             });
           })
           .catch((e) => {
+            ////
             console.warn(e);
+            ////
           });
         }
       });
@@ -64,11 +105,11 @@ angular.module('starter.controllers', [])
 
 
   .controller('IncomingBussesCtrl', function($scope, Busses, Settings) {
+
     Settings.getInboundRoute().then((route)=>{
       Settings.getInboundStop().then((stop)=>{
 
-        console.log('route: ', route);
-        console.dir(stop);
+        console.log('Incoming route: ', route, stop);
 
         update(route, stop);
         ////////////////////////////////////////////////////////////////////////
@@ -86,10 +127,34 @@ angular.module('starter.controllers', [])
 
     function update(inboundRoute, inboundStop) {
       return Busses.get(inboundRoute, inboundStop).then((busses) => {
-        console.log(busses);
         _calcBusses(busses, $scope);
       });
     }
+
+
+    //ToDo: Dry this up
+    $scope.$on('$ionicView.enter', function(){
+      Settings.getInboundRoute().then((route)=>{
+        Settings.getInboundStop().then((stop)=>{
+
+          console.log('Incoming route: ', route, stop);
+
+          update(route, stop);
+          ////////////////////////////////////////////////////////////////////////
+          $scope.doRefresh = function() {
+            update(route, stop).finally(() => {
+               $scope.$broadcast('scroll.refreshComplete');
+            });
+          };
+          ////////////////////////////////////////////////////////////////////////
+
+        });
+      }).catch((e) => {
+        console.warn(e);
+      });
+    });
+
+
 
   })
 
@@ -123,6 +188,30 @@ angular.module('starter.controllers', [])
         _calcBusses(busses, $scope);
       });
     }
+
+
+    //ToDo: Dry this up
+    $scope.$on('$ionicView.enter', function(){
+      Settings.getOutboundRoute().then((route)=>{
+        Settings.getOutboundStop().then((stop)=>{
+
+          console.log('Outgoing route: ', route, stop);
+
+          update(route, stop);
+          ////////////////////////////////////////////////////////////////////////
+          $scope.doRefresh = function() {
+            update(route, stop).finally(() => {
+               $scope.$broadcast('scroll.refreshComplete');
+            });
+          };
+          ////////////////////////////////////////////////////////////////////////
+
+        });
+      }).catch((e) => {
+        console.warn(e);
+      });
+    });
+
   })
 
 
@@ -135,30 +224,9 @@ angular.module('starter.controllers', [])
   .controller('AccountCtrl', function($scope, Stops, Settings, Routes) {
     $scope.form = {};
 
-    Settings.getInboundRoute().then((route)=>{
-      $scope.$apply(()=>{
-        $scope.form.routeInbound = route;
-        listStops(route);
-      });
-    });
-    $scope.routeInboundSelected = function() {
-      Settings.setInboundRoute($scope.form.routeInbound);
-      listStops($scope.form.routeInbound);
-    };
-
-
-    Settings.getInboundStop().then((stop)=>{
-      $scope.$apply(()=>{
-        $scope.form.stopInbound = stop;
-      });
-    });
-    $scope.stopInboundSelected = function() {
-      Settings.setInboundStop($scope.form.stopInbound);
-      listStops($scope.form.stopInbound);
-    };
-
-
-
+    /**
+     * Get all routes and populate select
+     */
     Routes.getAll().then((routes) => {
       $scope.$apply(()=>{
         $scope.routes = routes;
@@ -166,59 +234,179 @@ angular.module('starter.controllers', [])
     });
 
 
-    function listStops(route) {
-      return Stops.getRouteStops(route)
-        .then((directions) => {
-          if (directions.length === 1) {
-            $scope.destinationA = directions[0].destination;
-            $scope.stopsInward = directions[0];
-          }
-          if (directions.length === 2) {
-            console.log(directions[0]);
-            $scope.destinationA = directions[0].destination;
-            $scope.destinationB = directions[1].destination;
-            $scope.stopsInward = directions[0].stops;
-            $scope.stopsOutward = directions[1].stops;
-          }
+    Settings.getInboundRoute().then((route)=>{
+      $scope.$apply(()=>{
+        $scope.form.routeInbound = route;
       });
-    }
+      Stops.getRouteStops(route).then((stops) => {
+          //Populate the dropdown based on what this returns
+          let stopList = [];
+          let stopsPerDirection = [];
+          let direction = '';
 
-    Stops.getStopInformation();
+          //Create dropdown friendly list
+          for (let i = 0; i < stops.length; i++) {
+            direction = stops[i].destination;
+            stopsPerDirection = stops[i].stops;
+            for (var j = 0; j < stopsPerDirection.length; j++) {
+              stopList.push({
+                direction: direction,
+                id: stopsPerDirection[j].stopid,
+                name: stopsPerDirection[j].shortname
+              });
+            }
+          }
+
+          $scope.$apply(()=>{
+            $scope.stopsInward = stopList;
+          });
+
+
+          Settings.getInboundStop().then((stop)=>{
+            $scope.$apply(()=>{
+              $scope.form.stopInbound = stop;
+            });
+          });
+
+      });
+    });
+
+    // TODO : dry this up
+
+    $scope.routeInboundSelected = function() {
+      Settings.setInboundRoute($scope.form.routeInbound);
+      Stops.getRouteStops($scope.form.routeInbound).then((stops) => {
+        //Populate the dropdown based on what this returns
+        let stopList = [];
+        let stopsPerDirection = [];
+        let direction = '';
+
+        //Create dropdown friendly list
+        for (let i = 0; i < stops.length; i++) {
+          direction = stops[i].destination;
+          stopsPerDirection = stops[i].stops;
+          for (var j = 0; j < stopsPerDirection.length; j++) {
+            stopList.push({
+              direction: direction,
+              id: stopsPerDirection[j].stopid,
+              name: stopsPerDirection[j].shortname
+            });
+          }
+        }
+
+        $scope.$apply(()=>{
+          $scope.stopsInward = stopList;
+        });
+
+
+        Settings.getInboundStop().then((stop)=>{
+
+          console.log('stop: ', stop);
+
+          $scope.$apply(()=>{
+            $scope.form.stopInbound = stop;
+          });
+        });
+      });
+    };
+
+
+    $scope.stopInboundSelected = function() {
+      Settings.setInboundStop($scope.form.stopInbound);
+    };
 
 
 
-    // Stops.get();
-    // Routes.getDublinBusses();
-    // Stops.getRouteStops('145');
-    //
-    // Settings.getInboundRoute().then((route)=>{
-    //   $scope.$apply(()=>{
-    //     $scope.form.routeInbound = route;
-    //   });
-    // });
-    // Settings.getInboundStop().then((stop)=>{
-    //   $scope.$apply(()=>{
-    //     $scope.form.stopInbound = stop;
-    //   });
-    // });
-    // Settings.getOutboundRoute().then((route)=>{
-    //   $scope.$apply(()=>{
-    //     $scope.form.routeOutbound = route;
-    //   });
-    // });
-    // Settings.getOutboundStop().then((stop)=>{
-    //   $scope.$apply(()=>{
-    //     $scope.form.stopOutbound = stop;
-    //   });
-    // });
-    //
-    // $scope.saveSettings = function(form) {
-    //   if (form) {
-    //     Settings.setInboundRoute(form.routeInbound);
-    //     Settings.setInboundStop(form.stopInbound);
-    //     Settings.setOutboundRoute(form.routeOutbound);
-    //     Settings.setOutboundStop(form.stopOutbound);
-    //   }
-    // }
+
+
+
+
+
+
+
+
+
+        Settings.getOutboundRoute().then((route)=>{
+          $scope.$apply(()=>{
+            $scope.form.routeOutbound = route;
+          });
+          Stops.getRouteStops(route).then((stops) => {
+              //Populate the dropdown based on what this returns
+              let stopList = [];
+              let stopsPerDirection = [];
+              let direction = '';
+
+              //Create dropdown friendly list
+              for (let i = 0; i < stops.length; i++) {
+                direction = stops[i].destination;
+                stopsPerDirection = stops[i].stops;
+                for (var j = 0; j < stopsPerDirection.length; j++) {
+                  stopList.push({
+                    direction: direction,
+                    id: stopsPerDirection[j].stopid,
+                    name: stopsPerDirection[j].shortname
+                  });
+                }
+              }
+
+              $scope.$apply(()=>{
+                $scope.stopsOutward = stopList;
+              });
+
+
+              Settings.getOutboundStop().then((stop)=>{
+                $scope.$apply(()=>{
+                  $scope.form.stopOutbound = stop;
+                });
+              });
+
+          });
+        });
+
+        // TODO : dry this up
+
+        $scope.routeOutboundSelected = function() {
+          Settings.setOutboundRoute($scope.form.routeOutbound);
+          Stops.getRouteStops($scope.form.routeOutbound).then((stops) => {
+            //Populate the dropdown based on what this returns
+            let stopList = [];
+            let stopsPerDirection = [];
+            let direction = '';
+
+            //Create dropdown friendly list
+            for (let i = 0; i < stops.length; i++) {
+              direction = stops[i].destination;
+              stopsPerDirection = stops[i].stops;
+              for (var j = 0; j < stopsPerDirection.length; j++) {
+                stopList.push({
+                  direction: direction,
+                  id: stopsPerDirection[j].stopid,
+                  name: stopsPerDirection[j].shortname
+                });
+              }
+            }
+
+            $scope.$apply(()=>{
+              $scope.stopsOutward = stopList;
+            });
+
+
+            Settings.getOutboundStop().then((stop)=>{
+
+              console.log('stop: ', stop);
+
+              $scope.$apply(()=>{
+                $scope.form.stopOutbound = stop;
+              });
+            });
+          });
+        };
+
+
+        $scope.stopOutboundSelected = function() {
+          Settings.setOutboundStop($scope.form.stopOutbound);
+        };
+
+
 
   });

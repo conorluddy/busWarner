@@ -55,44 +55,53 @@ angular.module('starter.services', [])
         console.log(errResponse);
       });
     },
+
     /**
      * return all of the stops along the provided route
      */
     getRouteStops: (routeId, operator = 'bac') => {
-      let url = 'https://data.dublinked.ie/cgi-bin/rtpi/routeinformation?&format=json&routeid=' + routeId + '&operator=' + operator;//Baile Atha Cliath ;)
+      let url = 'https://data.dublinked.ie/cgi-bin/rtpi/routeinformation?&format=json&routeid=' + routeId + '&operator=' + operator;//Baile Atha Cliath
 
       if (!routeId || !operator) {
         console.warn('No route ID or no operator');
         return [];
       }
 
-      return $http.get(url).then((response) => {
-        if (parseInt(response.data.errorcode) !== 0) {
-          console.warn(response);
-          return [];
-        } else {
-          return response.data.results;
-        }
-
-      }).catch(function(errResponse){
-        console.log(errResponse);
+      return new Promise((resolve, reject) => {
+          /**
+           * If we looked this route up before it should be cached.
+           * Else ping the URL and cache the response in localforage for next time
+           */
+          localforage.getItem('routeStops' + routeId).then((stops) => {
+            if (stops) {
+              console.log('Cached stops: ', stops);
+              resolve(stops);
+            } else {
+              return $http.get(url).then((response) => {
+                if (parseInt(response.data.errorcode) !== 0) {
+                  console.warn(response);
+                  reject();
+                } else {
+                  //Store for next time
+                  localforage.setItem(('routeStops' + routeId), response.data.results);
+                  resolve(response.data.results);
+                }
+              }).catch(function(errResponse){
+                console.log(errResponse);
+                reject();
+              });
+            }
+          });
       });
-    },
-    /**
-     * return all of the stops along the provided route
-     */
-    getStopInformation: (stopId) => {
-
-      localforage.getItem('stopCache')
-        .then((stops)=>{
-          console.log('stops');
-          console.log(stops);
-        });
 
     }
-
   };
 })
+
+
+
+
+
 
 
 .factory('Routes', ($http) => {
@@ -136,7 +145,13 @@ angular.module('starter.services', [])
       }).catch(function(errResponse){
         console.log(errResponse);
       });
+    },
+
+
+    buildRouteDetailCache: (route) => {
+      console.log(route);
     }
+
   };
 })
 
@@ -184,6 +199,15 @@ angular.module('starter.services', [])
         });
     },
 
+    setInboundStopDirection: (direction) => {
+      return localforage.setItem('inboundStopDirection', direction)
+        .then((direction) => {
+          return direction;
+        }).catch((err) => {
+          console.warn(err);
+        });
+    },
+
     setInboundStop: (inboundStop) => {
       return localforage.setItem('busStopInbound', inboundStop)
         .then((inboundStop) => {
@@ -199,6 +223,15 @@ angular.module('starter.services', [])
         .then((outboundRoute) => {
           console.log('Saving outboundRoute: ', outboundRoute);
           return outboundRoute;
+        }).catch((err) => {
+          console.warn(err);
+        });
+    },
+
+    setOutboundStopDirection: (direction) => {
+      return localforage.setItem('outboundStopDirection', direction)
+        .then((direction) => {
+          return direction;
         }).catch((err) => {
           console.warn(err);
         });
@@ -221,12 +254,20 @@ angular.module('starter.services', [])
       return localforage.getItem('busRouteInbound');
     },
 
+    getInboundStopDirection: (inboundStopDirection) => {
+      return localforage.getItem('inboundStopDirection');
+    },
+
     getInboundStop: (inboundStop) => {
       return localforage.getItem('busStopInbound');
     },
 
     getOutboundRoute: (outboundRoute) => {
       return localforage.getItem('busRouteOutbound');
+    },
+
+    getOutboundStopDirection: (outboundStopDirection) => {
+      return localforage.getItem('outboundStopDirection');
     },
 
     getOutboundStop: (outboundStop) => {

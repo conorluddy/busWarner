@@ -2,117 +2,84 @@
   <ion-content>
 
 
-    <div class="list">
-      <label class="item item-input item-select">
-        <div class="input-label">
-          Inbound
-        </div>
-        <select ng-change="routeInboundSelected()" ng-model="form.routeInbound">
-          <option ng-repeat="option in routes" value="{{option}}">{{option}}</option>
-        </select>
-      </label>
-
-      <label class="item item-input item-select">
-        <div class="input-label">
-          Stop number
-        </div>
-        <select ng-change="stopInboundSelected()" ng-model="form.stopInbound">
-          <option ng-repeat="option in stopsInward" value="{{option.stopid}}">{{option.stopid}} - {{option.shortname}}</option>
-        </select>
-      </label>
-    </div>
-
-<!--
-    <div class="list">
-
+    <div class="card">
       <div class="item item-divider">
-        Towards {{destinationA}}
+        Commute work-bound
       </div>
-      <a class="item" href="#" ng-repeat="stop in stopsInward">{{stop.shortname}} <small>{{stop.stopid}}</small></a>
-
+      <div class="item item-text-wrap">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Route
+            </div>
+            <select ng-change="routeInboundSelected()" ng-model="form.routeInbound">
+              <option ng-repeat="option in routes" value="{{option}}">{{option}}</option>
+            </select>
+          </label>
+          <!-- <label class="item item-input item-select">
+            <div class="input-label">
+              Towards
+            </div>
+            <select ng-change="routeInboundDirectionSelected()" ng-model="form.routeInboundDirections">
+              <option ng-repeat="option in form.routeInboundDirections" value="{{option}}">{{option}}</option>
+            </select>
+          </label> -->
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Stop
+            </div>
+            <select ng-change="stopInboundSelected()" ng-model="form.stopInbound" ng-value="{{option.id}}">
+              <option ng-repeat="option in stopsInward" value="{{option.id}}">
+                {{option.id}} : {{option.name}} to {{option.direction}}
+              </option>
+            </select>
+          </label>
+      </div>
       <div class="item item-divider">
-        Towards {{destinationB}}
+        Select your bus route to work
       </div>
-      <a class="item" href="#" ng-repeat="stop in stopsOutward">{{stop.shortname}} <small>{{stop.stopid}}</small></a>
-    </div> -->
-
-
-
-<!--
-        <div class="list card">
-
-          <div class="item item-avatar">
-            <h2>Inbound Commute</h2>
-            <p></p>
-          </div>
-
-          <div class="item item-image">
-          </div>
-
-          <a class="item item-icon-left assertive" href="#">
-            Save
-          </a>
-
-        </div>
-
-
-    <div class="list">
-      <label class="item item-input item-select">
-        <div class="input-label">
-          Outbound
-        </div>
-        <select>
-          <option>Blue</option>
-          <option selected>Green</option>
-          <option>Red</option>
-        </select>
-      </label>
     </div>
 
 
-
-        <div class="list card">
-
-          <div class="item item-avatar">
-            <h2>Outbound Commute</h2>
-            <p></p>
-          </div>
-
-          <div class="item item-image">
-          </div>
-
-          <a class="item item-icon-left assertive" href="#">
-            Save
-          </a>
-
-        </div>
-
-
-    <form ng-submit="saveSettings(form)">
-
-      <div class="list list-inset">
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">InboundRoute</span>
-          <input type="text" placeholder="Route No." ng-model="form.routeInbound" value="{{inboundRoute}}">
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">InboundStop</span>
-          <input type="text" placeholder="Stop No." ng-model="form.stopInbound" value="{{inboundStop}}">
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">OutboundRoute</span>
-          <input type="text" placeholder="Route No." ng-model="form.routeOutbound" value="{{outboundRoute}}">
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">OutboundStop</span>
-          <input type="text" placeholder="Stop No." ng-model="form.stopOutbound" value="{{outboundStop}}">
-        </label>
+    <div class="card">
+      <div class="item item-divider">
+        Commute homeward-bound
       </div>
-
-      <div class="padding">
-        <button type="submit" class="button button-block button-positive">Save</button>
+      <div class="item item-text-wrap">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Route
+            </div>
+            <select ng-change="routeOutboundSelected()" ng-model="form.routeOutbound">
+              <option ng-repeat="option in routes" value="{{option}}">{{option}}</option>
+            </select>
+          </label>
+          <!-- <label class="item item-input item-select">
+            <div class="input-label">
+              Towards
+            </div>
+            <select ng-change="routeOutboundDirectionSelected()" ng-model="form.routeOutboundDirection">
+              <option value="{{destinationA}}">
+                {{destinationA}}
+              </option>
+              <option value="{{destinationB}}">
+                {{destinationB}}
+              </option>
+            </select>
+          </label> -->
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Stop
+            </div>
+            <select ng-change="stopOutboundSelected()" ng-model="form.stopOutbound" ng-value="{{option.id}}">
+              <option ng-repeat="option in stopsOutward" value="{{option.id}}">
+                {{option.id}} : {{option.name}} to {{option.direction}}
+              </option>
+            </select>
+          </label>
       </div>
-    </form> -->
-
+      <div class="item item-divider">
+        Select your bus route home
+      </div>
+    </div>
   </ion-content>
 </ion-view>

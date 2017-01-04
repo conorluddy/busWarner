@@ -26,13 +26,13 @@
 
     <div ng-class="busses.length ? 'following-busses' : 'following-busses none-due'">
 
-            <div class="bus-bar" ng-repeat="bus in busses" style="{{bus.barStyle}}"  ng-class="bus.barCold ? 'bus-bar bus-cold' : 'bus-bar'">
-              {{bus.etaMins}}
-            </div>
+      <div class="bus-bar" ng-repeat="bus in busses" style="{{bus.barStyle}}"  ng-class="bus.barCold ? 'bus-bar bus-cold' : 'bus-bar'">
+        {{bus.etaMins}}
+      </div>
 
-            <div class="bus-bar" ng-show="!busses.length">
-              No more busses due
-            </div>
+      <div class="bus-bar" ng-show="!busses.length">
+        No more busses due
+      </div>
 
     </div>
 
