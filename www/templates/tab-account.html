@@ -1,8 +1,7 @@
 <ion-view view-title="Account">
   <ion-content>
 
-
-    <div class="card">
+    <div class="card settings">
       <div class="item item-divider">
         Commute work-bound
       </div>
@@ -15,23 +14,14 @@
               <option ng-repeat="option in routes" value="{{option}}">{{option}}</option>
             </select>
           </label>
-          <!-- <label class="item item-input item-select">
-            <div class="input-label">
-              Towards
-            </div>
-            <select ng-change="routeInboundDirectionSelected()" ng-model="form.routeInboundDirections">
-              <option ng-repeat="option in form.routeInboundDirections" value="{{option}}">{{option}}</option>
-            </select>
-          </label> -->
-          <label class="item item-input item-select">
+
+          <ion-spinner icon="lines" class="spinner" ng-show="!stopsInward.length"></ion-spinner>
+
+          <label class="item item-input item-select" ng-show="stopsInward.length">
             <div class="input-label">
               Stop
             </div>
-            <select ng-change="stopInboundSelected()" ng-model="form.stopInbound" ng-value="{{option.id}}">
-              <option ng-repeat="option in stopsInward" value="{{option.id}}">
-                {{option.id}} : {{option.name}} to {{option.direction}}
-              </option>
-            </select>
+            <select ng-change="stopInboundSelected()" ng-model="form.stopInbound" ng-value="{{option.id}}"  ng-options="stop as stop.label for stop in stopsInward track by stop.id"></select>
           </label>
       </div>
       <div class="item item-divider">
@@ -40,7 +30,7 @@
     </div>
 
 
-    <div class="card">
+    <div class="card settings">
       <div class="item item-divider">
         Commute homeward-bound
       </div>
@@ -53,28 +43,14 @@
               <option ng-repeat="option in routes" value="{{option}}">{{option}}</option>
             </select>
           </label>
-          <!-- <label class="item item-input item-select">
-            <div class="input-label">
-              Towards
-            </div>
-            <select ng-change="routeOutboundDirectionSelected()" ng-model="form.routeOutboundDirection">
-              <option value="{{destinationA}}">
-                {{destinationA}}
-              </option>
-              <option value="{{destinationB}}">
-                {{destinationB}}
-              </option>
-            </select>
-          </label> -->
-          <label class="item item-input item-select">
+
+          <ion-spinner icon="lines" class="spinner" ng-show="!stopsOutward.length"></ion-spinner>
+
+          <label class="item item-input item-select" ng-show="stopsOutward.length">
             <div class="input-label">
               Stop
             </div>
-            <select ng-change="stopOutboundSelected()" ng-model="form.stopOutbound" ng-value="{{option.id}}">
-              <option ng-repeat="option in stopsOutward" value="{{option.id}}">
-                {{option.id}} : {{option.name}} to {{option.direction}}
-              </option>
-            </select>
+            <select ng-change="stopOutboundSelected()" ng-model="form.stopOutbound" ng-value="{{option.id}}" ng-options="stop as stop.label for stop in stopsOutward track by stop.id"></select>
           </label>
       </div>
       <div class="item item-divider">

@@ -9927,13 +9927,15 @@ a.button {
     font-weight: 300;
     margin-top: 10px;
     padding-right: 0.4em;
-    width: 120%;
+    width: 100%;
     float: right;
     border-radius: 2px;
-    position: relative; }
+    position: relative;
+    box-shadow: -200px 0 0 0 #ffcd00; }
     .c-countdown .bus-bar.bus-cold {
-      background: #00a7ea; }
-    .c-countdown .bus-bar:after {
+      background: #00a7ea;
+      box-shadow: -200px 0 0 0 #00a7ea; }
+    .c-countdown .bus-bar:first-child:after {
       content: 'MINS';
       position: absolute;
       right: -2em;
@@ -9942,6 +9944,26 @@ a.button {
     transform: rotate(-15deg) translate3d(0, 0, 0);
     background: #00a7ea;
     opacity: 0.3; }
+  .c-countdown .bus-stop {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 230px;
+    transform: rotate(-15deg);
+    transform-origin: 100% 100%;
+    text-align: right;
+    padding-right: 20px; }
+    .c-countdown .bus-stop > * {
+      display: block; }
+    .c-countdown .bus-stop .route-stop {
+      color: #ffcd00;
+      font-weight: 300;
+      font-size: 1rem; }
 
 .tabs {
   background: unset; }
+
+.settings .spinner {
+  margin: 20px auto 0;
+  display: block;
+  text-align: center; }

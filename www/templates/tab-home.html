@@ -1,16 +1,12 @@
 <ion-view>
   <ion-content class="c-countdown">
 
-    <ion-refresher
-      pulling-text="Pull to refresh..."
-      on-refresh="doRefresh()">
+    <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
     </ion-refresher>
-
-
 
     <div class="next-bus">
       <h3 class="route-destination">
-        {{destination}}<span class="route-number">{{route}}</span>
+        To {{destination}}<span class="route-number">{{route}}</span>
       </h3>
 
       <time class="next-time" ng-show="nextBus.dueTime">
@@ -23,10 +19,9 @@
     </div>
 
 
-
     <div ng-class="busses.length ? 'following-busses' : 'following-busses none-due'">
 
-      <div class="bus-bar" ng-repeat="bus in busses" style="{{bus.barStyle}}"  ng-class="bus.barCold ? 'bus-bar bus-cold' : 'bus-bar'">
+      <div class="bus-bar" ng-repeat="bus in busses" style="{{bus.barStyle}}" ng-class="bus.barCold ? 'bus-bar bus-cold' : 'bus-bar'">
         {{bus.etaMins}}
       </div>
 
@@ -34,9 +29,16 @@
         No more busses due
       </div>
 
+      <div class="bus-bar" ng-show="!stop">
+        You may need to select a bus stop in the settings section.
+      </div>
     </div>
-
-
+<!-- 
+    <div class="bus-stop">
+      <h3 class="route-stop">
+        Stop {{stop}}
+      </h3>
+    </div> -->
 
   </ion-content>
 </ion-view>
