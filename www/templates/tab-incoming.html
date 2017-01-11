@@ -7,7 +7,7 @@
     <div class="next-bus">
 
       <h3 class="route-destination">
-        To {{destination}}<span class="route-number">{{route}}</span>
+        Towards {{destination}}<span class="route-number"> {{route}}</span>
       </h3>
 
       <time class="next-time" ng-show="nextBus.dueTime">
@@ -15,7 +15,7 @@
       </time>
 
       <time class="next-mins" ng-show="nextBus.dueTime">
-        <span>{{nextBus.etaMins}}</span><span> MINUTES AWAY</span>
+        <span>STOP</span> <span>{{stop}}</span>
       </time>
 
     </div>
@@ -23,24 +23,15 @@
     <div ng-class="busses.length ? 'following-busses' : 'following-busses none-due'">
 
       <div class="bus-bar" ng-repeat="bus in busses" style="{{bus.barStyle}}" ng-class="bus.barCold ? 'bus-bar bus-cold' : 'bus-bar'">
-        {{bus.etaMins}}
+        <span ng-show="bus.etaMins">{{bus.etaMins}}</span>
       </div>
 
       <div class="bus-bar" ng-show="!busses.length">
         No more busses due
       </div>
 
-      <div class="bus-bar" ng-show="!stop">
-        You may need to select a bus stop in the settings section.
-      </div>
-
     </div>
 
-    <!-- <div class="bus-stop">
-      <h3 class="route-stop">
-        Stop {{stop.id}}
-      </h3>
-    </div> -->
 
   </ion-content>
 </ion-view>

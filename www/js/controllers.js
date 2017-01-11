@@ -83,6 +83,13 @@ angular.module('starter.controllers', [])
 
 
 
+
+
+
+
+
+
+
 .controller('IncomingBussesCtrl', function($scope, Busses, Settings) {
 
   Settings.getInboundRoute().then((route) => {
@@ -137,6 +144,14 @@ angular.module('starter.controllers', [])
 
 
 })
+
+
+
+
+
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -213,11 +228,11 @@ angular.module('starter.controllers', [])
     });
   });
 
-
   Settings.getInboundRoute().then((route) => {
     $scope.$apply(() => {
       $scope.form.routeInbound = route;
     });
+
     Stops.getRouteStops(route).then((stops) => {
       //Populate the dropdown based on what this returns
       let stopList = [];
@@ -239,13 +254,9 @@ angular.module('starter.controllers', [])
         }
       }
 
-      $scope.$apply(() => {
-        $scope.stopsInward = stopList;
-      });
-
-
       Settings.getInboundStop().then((stop) => {
         $scope.$apply(() => {
+          $scope.stopsInward = stopList;
           $scope.form.stopInbound = stop;
         });
       });
@@ -259,6 +270,7 @@ angular.module('starter.controllers', [])
     $scope.stopsInward.length = 0;
 
     Settings.setInboundRoute($scope.form.routeInbound);
+
     Stops.getRouteStops($scope.form.routeInbound).then((stops) => {
       //Populate the dropdown based on what this returns
       let stopList = [];
@@ -280,25 +292,17 @@ angular.module('starter.controllers', [])
         }
       }
 
+      //Route changed so wipe stop
       $scope.$apply(() => {
         $scope.stopsInward = stopList;
+        $scope.form.stopInbound = '';
       });
 
-
-      Settings.getInboundStop().then((stop) => {
-
-        console.log('stop: ', stop);
-
-        $scope.$apply(() => {
-          $scope.form.stopInbound = stop;
-        });
-      });
     });
   };
 
-
   $scope.stopInboundSelected = function() {
-    Settings.setInboundStop($scope.form.stopInbound.id);
+    Settings.setInboundStop($scope.form.stopInbound);
   };
 
 
@@ -334,13 +338,9 @@ angular.module('starter.controllers', [])
         }
       }
 
-      $scope.$apply(() => {
-        $scope.stopsOutward = stopList;
-      });
-
-
       Settings.getOutboundStop().then((stop) => {
         $scope.$apply(() => {
+          $scope.stopsOutward = stopList;
           $scope.form.stopOutbound = stop;
         });
       });
@@ -354,6 +354,7 @@ angular.module('starter.controllers', [])
     $scope.stopsOutward.length = 0;
 
     Settings.setOutboundRoute($scope.form.routeOutbound);
+
     Stops.getRouteStops($scope.form.routeOutbound).then((stops) => {
       //Populate the dropdown based on what this returns
       let stopList = [];
@@ -375,26 +376,20 @@ angular.module('starter.controllers', [])
         }
       }
 
+      //Route changed so wipe stop
       $scope.$apply(() => {
         $scope.stopsOutward = stopList;
+        $scope.form.stopOutbound = '';
       });
 
-
-      Settings.getOutboundStop().then((stop) => {
-
-        console.log('stop: ', stop);
-
-        $scope.$apply(() => {
-          $scope.form.stopOutbound = stop;
-        });
-      });
     });
   };
 
 
   $scope.stopOutboundSelected = function() {
-    Settings.setOutboundStop($scope.form.stopOutbound.id);
+    Settings.setOutboundStop($scope.form.stopOutbound);
   };
+
 
 
 

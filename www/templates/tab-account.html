@@ -1,9 +1,10 @@
 <ion-view view-title="Account">
   <ion-content>
 
+
     <div class="card settings">
       <div class="item item-divider">
-        Commute work-bound
+        Work-bound : Route {{form.routeInbound}}, Stop {{form.stopInbound}}
       </div>
       <div class="item item-text-wrap">
           <label class="item item-input item-select">
@@ -21,18 +22,30 @@
             <div class="input-label">
               Stop
             </div>
-            <select ng-change="stopInboundSelected()" ng-model="form.stopInbound" ng-value="{{option.id}}"  ng-options="stop as stop.label for stop in stopsInward track by stop.id"></select>
+
+            <select ng-change="stopInboundSelected()" ng-model="form.stopInbound">
+              <option value="">Select your stop</option>
+              <option ng-repeat="stop in stopsInward" value="{{stop.id}}">
+                {{stop.label}}
+              </option>
+            </select>
+
           </label>
       </div>
       <div class="item item-divider">
-        Select your bus route to work
+        Select your bus route to work.
       </div>
     </div>
 
 
+
+
+
+
+
     <div class="card settings">
       <div class="item item-divider">
-        Commute homeward-bound
+        Homeward-bound : Route {{form.routeOutbound}}, Stop {{form.stopOutbound}}
       </div>
       <div class="item item-text-wrap">
           <label class="item item-input item-select">
@@ -50,12 +63,25 @@
             <div class="input-label">
               Stop
             </div>
-            <select ng-change="stopOutboundSelected()" ng-model="form.stopOutbound" ng-value="{{option.id}}" ng-options="stop as stop.label for stop in stopsOutward track by stop.id"></select>
+            <select ng-change="stopOutboundSelected()" ng-model="form.stopOutbound">
+              <option value="">Select your stop</option>
+              <option ng-repeat="stop in stopsOutward" value="{{stop.id}}">
+                {{stop.label}}
+              </option>
+            </select>
           </label>
       </div>
       <div class="item item-divider">
         Select your bus route home
       </div>
     </div>
+
+
+
+
+
+
+
+
   </ion-content>
 </ion-view>
