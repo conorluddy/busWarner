@@ -91,12 +91,17 @@ angular.module('starter.controllers', [])
 
 
 .controller('IncomingBussesCtrl', function($scope, Busses, Settings) {
+  $scope.hasRouteAndStop = false;
 
   Settings.getInboundRoute().then((route) => {
     Settings.getInboundStop().then((stop) => {
 
       console.log('Incoming route: ', route);
       console.log('Incoming stop: ', stop);
+
+      // hasRoute = (route && stop);
+
+      $scope.hasRouteAndStop = route && stop;
 
       update(route, stop);
       ////////////////////////////////////////////////////////////////////////
@@ -118,13 +123,14 @@ angular.module('starter.controllers', [])
     });
   }
 
-
   //ToDo: Dry this up
   $scope.$on('$ionicView.enter', function() {
     Settings.getInboundRoute().then((route) => {
       Settings.getInboundStop().then((stop) => {
 
         console.log('Incoming route: ', route, stop);
+
+        $scope.hasRouteAndStop = route && stop;
 
         update(route, stop);
         ////////////////////////////////////////////////////////////////////////
@@ -156,9 +162,12 @@ angular.module('starter.controllers', [])
 //////////////////////////////////////////////////////////////////////////////
 
 .controller('HomeBussesCtrl', function($scope, Busses, Settings) {
+  $scope.hasRouteAndStop = false;
+
   Settings.getOutboundRoute().then((route) => {
     Settings.getOutboundStop().then((stop) => {
 
+      $scope.hasRouteAndStop = route && stop;
       update(route, stop);
       ////////////////////////////////////////////////////////////////////////
       $scope.doRefresh = function() {
@@ -192,6 +201,7 @@ angular.module('starter.controllers', [])
 
         console.log('Outgoing route: ', route, stop);
 
+        $scope.hasRouteAndStop = route && stop;
         update(route, stop);
         ////////////////////////////////////////////////////////////////////////
         $scope.doRefresh = function() {
@@ -241,18 +251,32 @@ angular.module('starter.controllers', [])
 
       //Create dropdown friendly list
       for (let i = 0; i < stops.length; i++) {
+
         direction = stops[i].destination;
         stopsPerDirection = stops[i].stops;
         for (var j = 0; j < stopsPerDirection.length; j++) {
+
+          // console.log(stopsPerDirection[j].latitude);
+          // console.log(stopsPerDirection[j].longitude);
+          // http://maps.googleapis.com/maps/api/geocode/json?latlng=53.346555,-6.258156111&sensor=true
+
           stopList.push({
             direction: direction,
             id: stopsPerDirection[j].stopid,
             name: stopsPerDirection[j].shortname,
             // label: 'Towards ' + direction + ', Stop ' + stopsPerDirection[j].stopid + stopsPerDirection[j].shortname
-            label: 'Stop ' + stopsPerDirection[j].stopid + ' - Towards ' + direction
+            label: stopsPerDirection[j].stopid// + ' - Towards ' + direction
           });
         }
       }
+
+      stopList = stopList.sort((a, b) => {
+        let idA = parseInt(a.id);
+        let idB = parseInt(b.id);
+        if (idA < idB) return -1;
+        if (idA > idB) return 1;
+        return 0;
+      });
 
       Settings.getInboundStop().then((stop) => {
         $scope.$apply(() => {
@@ -267,7 +291,6 @@ angular.module('starter.controllers', [])
   // TODO : dry this up
 
   $scope.routeInboundSelected = function() {
-    $scope.stopsInward.length = 0;
 
     Settings.setInboundRoute($scope.form.routeInbound);
 
@@ -287,10 +310,18 @@ angular.module('starter.controllers', [])
             id: stopsPerDirection[j].stopid,
             name: stopsPerDirection[j].shortname,
             // label: direction + stopsPerDirection[j].stopid + stopsPerDirection[j].shortname
-            label: 'Stop ' + stopsPerDirection[j].stopid + ' - Towards ' + direction
+            label: stopsPerDirection[j].stopid// + ' - Towards ' + direction
           });
         }
       }
+
+      stopList = stopList.sort((a, b) => {
+        let idA = parseInt(a.id);
+        let idB = parseInt(b.id);
+        if (idA < idB) return -1;
+        if (idA > idB) return 1;
+        return 0;
+      });
 
       //Route changed so wipe stop
       $scope.$apply(() => {
@@ -333,10 +364,18 @@ angular.module('starter.controllers', [])
             id: stopsPerDirection[j].stopid,
             name: stopsPerDirection[j].shortname,
             // label: direction + stopsPerDirection[j].stopid + stopsPerDirection[j].shortname
-            label: 'Stop ' + stopsPerDirection[j].stopid + ' - Towards ' + direction
+            label: stopsPerDirection[j].stopid// + ' - Towards ' + direction
           });
         }
       }
+
+      stopList = stopList.sort((a, b) => {
+        let idA = parseInt(a.id);
+        let idB = parseInt(b.id);
+        if (idA < idB) return -1;
+        if (idA > idB) return 1;
+        return 0;
+      });
 
       Settings.getOutboundStop().then((stop) => {
         $scope.$apply(() => {
@@ -351,7 +390,6 @@ angular.module('starter.controllers', [])
   // TODO : dry this up
 
   $scope.routeOutboundSelected = function() {
-    $scope.stopsOutward.length = 0;
 
     Settings.setOutboundRoute($scope.form.routeOutbound);
 
@@ -371,10 +409,18 @@ angular.module('starter.controllers', [])
             id: stopsPerDirection[j].stopid,
             name: stopsPerDirection[j].shortname,
             // label: direction + stopsPerDirection[j].stopid + stopsPerDirection[j].shortname
-            label: 'Stop ' + stopsPerDirection[j].stopid + ' - Towards ' + direction
+            label: stopsPerDirection[j].stopid// + ' - Towards ' + direction
           });
         }
       }
+
+      stopList = stopList.sort((a, b) => {
+        let idA = parseInt(a.id);
+        let idB = parseInt(b.id);
+        if (idA < idB) return -1;
+        if (idA > idB) return 1;
+        return 0;
+      });
 
       //Route changed so wipe stop
       $scope.$apply(() => {

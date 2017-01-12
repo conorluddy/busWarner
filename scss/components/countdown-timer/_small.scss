@@ -182,4 +182,27 @@
     }
 
   }
+
+
+
+
+
+
+
+  .no-settings {
+    font-size: 3rem;
+    padding: 10%;
+    line-height: 1.25;
+    text-align: center;
+    margin-top: 20vh;
+    color: $dbYellow;
+    small {
+      color: #666;
+      display: block;
+      font-size: 2rem;
+    }
+  }
+
+
+
 }

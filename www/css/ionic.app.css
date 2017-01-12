@@ -9967,6 +9967,17 @@ a.button {
       color: #ffcd00;
       font-weight: 300;
       font-size: 1rem; }
+  .c-countdown .no-settings {
+    font-size: 3rem;
+    padding: 10%;
+    line-height: 1.25;
+    text-align: center;
+    margin-top: 20vh;
+    color: #ffcd00; }
+    .c-countdown .no-settings small {
+      color: #666;
+      display: block;
+      font-size: 2rem; }
 
 .tabs {
   background: unset; }

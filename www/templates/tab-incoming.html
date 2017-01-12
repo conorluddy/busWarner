@@ -4,34 +4,40 @@
     <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()">
     </ion-refresher>
 
-    <div class="next-bus">
+      <div ng-show="hasRouteAndStop">
+        <div class="next-bus">
 
-      <h3 class="route-destination">
-        Towards {{destination}}<span class="route-number"> {{route}}</span>
-      </h3>
+          <h3 class="route-destination">
+            Towards {{destination}}<span class="route-number"> {{route}}</span>
+          </h3>
 
-      <time class="next-time" ng-show="nextBus.dueTime">
-        <span>{{nextBus.dueTime.h}}</span><span>{{nextBus.dueTime.m}}</span>
-      </time>
+          <time class="next-time" ng-show="nextBus.dueTime">
+            <span>{{nextBus.dueTime.h}}</span><span>{{nextBus.dueTime.m}}</span>
+          </time>
 
-      <time class="next-mins" ng-show="nextBus.dueTime">
-        <span>STOP</span> <span>{{stop}}</span>
-      </time>
+          <time class="next-mins" ng-show="nextBus.dueTime">
+            <span>STOP</span> <span>{{stop}}</span>
+          </time>
 
-    </div>
+        </div>
 
-    <div ng-class="busses.length ? 'following-busses' : 'following-busses none-due'">
+        <div ng-class="busses.length ? 'following-busses' : 'following-busses none-due'">
 
-      <div class="bus-bar" ng-repeat="bus in busses" style="{{bus.barStyle}}" ng-class="bus.barCold ? 'bus-bar bus-cold' : 'bus-bar'">
-        <span ng-show="bus.etaMins">{{bus.etaMins}}</span>
+          <div class="bus-bar" ng-repeat="bus in busses" style="{{bus.barStyle}}" ng-class="bus.barCold ? 'bus-bar bus-cold' : 'bus-bar'">
+            <span ng-show="bus.etaMins">{{bus.etaMins}}</span>
+          </div>
+
+          <div class="bus-bar" ng-show="!busses.length">
+            No more busses due
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="bus-bar" ng-show="!busses.length">
-        No more busses due
+      <div ng-show="!hasRouteAndStop" class="no-settings">
+        Dublin Bus Warner! <small>Check out the settings page to set your routes and stops. Improvements to stop selection in next version if there's any interest...</small>
       </div>
-
-    </div>
-
 
   </ion-content>
 </ion-view>

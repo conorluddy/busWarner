@@ -16,7 +16,7 @@
             </select>
           </label>
 
-          <ion-spinner icon="lines" class="spinner" ng-show="!stopsInward.length"></ion-spinner>
+          <ion-spinner icon="lines" class="spinner" ng-show="!stopsInward.length && form.routeInbound"></ion-spinner>
 
           <label class="item item-input item-select" ng-show="stopsInward.length">
             <div class="input-label">
@@ -57,7 +57,7 @@
             </select>
           </label>
 
-          <ion-spinner icon="lines" class="spinner" ng-show="!stopsOutward.length"></ion-spinner>
+          <ion-spinner icon="lines" class="spinner" ng-show="!stopsOutward.length && form.routeOutbound"></ion-spinner>
 
           <label class="item item-input item-select" ng-show="stopsOutward.length">
             <div class="input-label">
